@@ -56,9 +56,11 @@ export const getUnits = cache(async () => {
 
   const normalizedData = data.map((unit) => {
     const lessonsWithCompletedStatus = unit.lessons.map((lesson) => {
-      const allCompletedChallenges = lesson.challenges.every(
-        (challenge) => challenge.challengeProgresses.length === 1 && challenge.challengeProgresses[0].completed //use have 0 or 1 relationship with a challenge progress
-      )
+      const allCompletedChallenges =
+        lesson.challenges.length > 0 &&
+        lesson.challenges.every(
+          (challenge) => challenge.challengeProgresses.length === 1 && challenge.challengeProgresses[0].completed //use have 0 or 1 relationship with a challenge progress
+        )
 
       return { ...lesson, completed: allCompletedChallenges }
     })
