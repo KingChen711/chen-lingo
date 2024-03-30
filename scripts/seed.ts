@@ -86,7 +86,7 @@ const main = async () => {
         lessonId: 1,
         type: 'SELECT',
         order: 1,
-        question: 'Which one of these is the "them an"?'
+        question: 'Which one of these is the "the man"?'
       }
     ])
 
@@ -102,7 +102,7 @@ const main = async () => {
       {
         id: 2,
         challengeId: 1,
-        imageSrc: '/man.svg',
+        imageSrc: '/woman.svg',
         correct: false,
         text: 'la mujer',
         audioSrc: '/es_woman.mp3'

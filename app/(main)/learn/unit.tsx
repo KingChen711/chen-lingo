@@ -9,13 +9,11 @@ type Props = {
   description: string
   title: string
   lessons: (typeof lessons.$inferSelect & { completed: boolean })[]
-  activeLesson: typeof lessons.$inferSelect | null
+  activeLesson: typeof lessons.$inferSelect
   activeLessonPercentage: number
 }
 
 function Unit({ activeLesson, activeLessonPercentage, description, id, lessons, order, title }: Props) {
-  console.log({ lessons })
-
   return (
     <>
       <UnitBanner title={title} description={description} />
