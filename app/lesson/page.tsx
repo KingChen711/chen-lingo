@@ -14,9 +14,8 @@ async function LessonPage() {
     redirect('/learn')
   }
 
-  const initialPercentage = Math.floor(
+  const initialPercentage =
     (lesson.challenges.filter((challenge) => challenge.completed).length / lesson.challenges.length) * 100
-  )
 
   return (
     <Quiz

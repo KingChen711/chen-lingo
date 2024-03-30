@@ -4,6 +4,7 @@ import db from '@/database/drizzle'
 import { getCourseById, getUserProgress } from '@/database/queries'
 import { userProgresses } from '@/database/schema'
 import { auth, currentUser } from '@clerk/nextjs'
+import { eq } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 
@@ -30,9 +31,12 @@ export const upsertUserProgress = async (courseId: number) => {
   const existingUserProgress = await getUserProgress()
 
   if (existingUserProgress) {
-    await db.update(userProgresses).set({
-      activeCourseId: courseId
-    })
+    await db
+      .update(userProgresses)
+      .set({
+        activeCourseId: courseId
+      })
+      .where(eq(userProgresses.userId, userId))
   } else {
     await db.insert(userProgresses).values({
       userId,
