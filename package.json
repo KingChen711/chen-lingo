@@ -14,7 +14,7 @@
     "db:push": "drizzle-kit push:pg",
     "db:generate-script": "drizzle-kit generate:pg",
     "db:generate-schema": "drizzle-kit introspect:pg",
-    "db:seed": "bun ./scripts/seed.ts"
+    "db:seed": "tsx ./scripts/seed.ts"
   },
   "dependencies": {
     "@clerk/nextjs": "^4.29.9",
