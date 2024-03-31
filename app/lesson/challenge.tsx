@@ -25,7 +25,6 @@ function Challenge({ disabled, onSelectOption, options, selectedOption, status, 
         return (
           <Card
             key={option.id}
-            id={option.id}
             text={option.text}
             imageSrc={option.imageSrc}
             audioSrc={option.audioSrc}

@@ -1,5 +1,4 @@
 import { getLesson, getUserProgress, getUserSubscription } from '@/database/queries'
-import { challenges } from '@/database/schema'
 import { redirect } from 'next/navigation'
 import React from 'react'
 import Quiz from './quiz'

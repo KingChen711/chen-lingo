@@ -1,8 +1,8 @@
 'use client'
 
-import React, { useMemo, useState, useTransition } from 'react'
+import React, { useState, useTransition } from 'react'
 
-import { challengeOptions, challenges, userSubscriptions } from '@/database/schema'
+import { challengeOptions, challenges } from '@/database/schema'
 import Header from './header'
 import QuestionBubble from './question-bubble'
 import Challenge from './challenge'
@@ -40,12 +40,12 @@ function Quiz({ initialHearts, initialLessonChallenges, initialLessonId, initial
     }
   })
 
-  const [lessonId] = useState(initialLessonId) //keep this value
+  const [lessonId] = useState(initialLessonId) //keep this value un change each rerender
   const [hearts, setHearts] = useState(initialHearts)
   const [percentage, setPercentage] = useState(() => {
     return initialPercentage === 100 ? 0 : initialPercentage
   })
-  const [challenges, setChallenges] = useState(initialLessonChallenges)
+  const [challenges] = useState(initialLessonChallenges) //keep this value un change each rerender
   const [activeIndex, setActiveIndex] = useState(() => {
     const uncompletedIndex = challenges.findIndex((challenge) => !challenge.completed)
     return uncompletedIndex === -1 ? 0 : uncompletedIndex
@@ -58,21 +58,15 @@ function Quiz({ initialHearts, initialLessonChallenges, initialLessonId, initial
   const router = useRouter()
   const { height, width } = useWindowSize()
 
-  const currentChallenge = useMemo(() => {
-    return challenges[activeIndex] || null
-  }, [activeIndex])
+  const currentChallenge = challenges[activeIndex] || null
 
-  const options = useMemo(() => {
-    return currentChallenge?.challengeOptions || []
-  }, [currentChallenge])
+  const options = currentChallenge?.challengeOptions || []
 
-  const title = useMemo(() => {
-    return currentChallenge
-      ? currentChallenge.type === 'ASSIST'
-        ? 'Select the correct meaning'
-        : currentChallenge.question
-      : ''
-  }, [currentChallenge])
+  const title = currentChallenge
+    ? currentChallenge.type === 'ASSIST'
+      ? 'Select the correct meaning'
+      : currentChallenge.question
+    : ''
 
   const [correctAudio, _c, correctControls] = useAudio({ src: '/sounds/correct.mp3' })
   const [incorrectAudio, _i, incorrectControls] = useAudio({ src: '/sounds/incorrect.mp3' })

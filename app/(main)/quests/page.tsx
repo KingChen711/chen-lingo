@@ -1,42 +1,17 @@
 import FeedWrapper from '@/components/shared/feed-wrapper'
 import StickyWrapper from '@/components/shared/sticky-wrapper'
 import UserProgress from '@/components/shared/user-progress'
-import { getTopTenUsers, getUserProgress, getUserSubscription } from '@/database/queries'
+import { getUserProgress, getUserSubscription } from '@/database/queries'
 import Image from 'next/image'
 import { redirect } from 'next/navigation'
-import { Separator } from '@/components/ui/separator'
 
 import React from 'react'
 
-import { Avatar, AvatarImage } from '@/components/ui/avatar'
 import { Progress } from '@/components/ui/progress'
+import Promo from '@/components/shared/promo'
+import { quests } from '@/constants'
 
-const quests = [
-  {
-    title: 'Earn 20 XP',
-    value: 20
-  },
-  {
-    title: 'Earn 50 XP',
-    value: 50
-  },
-  {
-    title: 'Earn 100 XP',
-    value: 100
-  },
-  {
-    title: 'Earn 500 XP',
-    value: 500
-  },
-  {
-    title: 'Earn 1000 XP',
-    value: 1000
-  }
-]
-
-type Props = {}
-
-async function QuestsPage({}: Props) {
+async function QuestsPage() {
   const userProgressData = getUserProgress()
   const userSubscriptionData = getUserSubscription()
 
@@ -57,6 +32,7 @@ async function QuestsPage({}: Props) {
           points={userProgress.points}
           hasActiveSubscription={isPro}
         />
+        {!isPro && <Promo />}
       </StickyWrapper>
       <FeedWrapper>
         <div className='w-full flex flex-col items-center'>

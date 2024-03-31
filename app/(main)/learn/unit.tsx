@@ -4,8 +4,6 @@ import UnitBanner from './unit-banner'
 import LessonButton from './lesson-button'
 
 type Props = {
-  id: number
-  order: number
   description: string
   title: string
   lessons: (typeof lessons.$inferSelect & { completed: boolean })[]
@@ -13,7 +11,7 @@ type Props = {
   activeLessonPercentage: number
 }
 
-function Unit({ activeLesson, activeLessonPercentage, description, id, lessons, order, title }: Props) {
+function Unit({ activeLesson, activeLessonPercentage, description, lessons, title }: Props) {
   return (
     <>
       <UnitBanner title={title} description={description} />

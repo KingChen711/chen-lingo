@@ -7,10 +7,9 @@ import { redirect } from 'next/navigation'
 
 import React from 'react'
 import Items from './items'
+import Quests from '@/components/shared/quests'
 
-type Props = {}
-
-async function ShopPage({}: Props) {
+async function ShopPage() {
   const userProgressData = getUserProgress()
   const userSubscriptionData = getUserSubscription()
 
@@ -31,6 +30,7 @@ async function ShopPage({}: Props) {
           points={userProgress.points}
           hasActiveSubscription={isPro}
         />
+        <Quests points={userProgress.points} />
       </StickyWrapper>
       <FeedWrapper>
         <div className='w-full flex flex-col items-center'>

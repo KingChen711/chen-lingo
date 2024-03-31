@@ -5,7 +5,6 @@ import React, { useCallback } from 'react'
 import { useAudio, useKey } from 'react-use'
 
 type Props = {
-  id: number
   text: string
   imageSrc: string | null
   audioSrc: string | null
@@ -17,7 +16,7 @@ type Props = {
   type: typeof challenges.$inferSelect.type
 }
 
-function Card({ audioSrc, id, imageSrc, onClick, shortcut, status, text, type, disabled, selected }: Props) {
+function Card({ audioSrc, imageSrc, onClick, shortcut, status, text, type, disabled, selected }: Props) {
   const [audio, _, controls] = useAudio({ src: audioSrc || '' })
 
   const handleClick = useCallback(() => {
@@ -25,9 +24,9 @@ function Card({ audioSrc, id, imageSrc, onClick, shortcut, status, text, type, d
 
     controls.play()
     onClick()
-  }, [disabled, onClick])
+  }, [disabled, onClick, controls])
 
-  useKey(shortcut, handleClick, {}, [handleClick])
+  useKey(shortcut, handleClick, {}, [handleClick, controls])
 
   return (
     <div

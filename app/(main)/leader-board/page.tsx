@@ -9,10 +9,10 @@ import { Separator } from '@/components/ui/separator'
 import React from 'react'
 
 import { Avatar, AvatarImage } from '@/components/ui/avatar'
+import Promo from '@/components/shared/promo'
+import Quests from '@/components/shared/quests'
 
-type Props = {}
-
-async function LeaderBoardPage({}: Props) {
+async function LeaderBoardPage() {
   const userProgressData = getUserProgress()
   const userSubscriptionData = getUserSubscription()
   const topTenUsersData = getTopTenUsers()
@@ -38,6 +38,8 @@ async function LeaderBoardPage({}: Props) {
           points={userProgress.points}
           hasActiveSubscription={isPro}
         />
+        {!isPro && <Promo />}
+        <Quests points={userProgress.points} />
       </StickyWrapper>
       <FeedWrapper>
         <div className='w-full flex flex-col items-center'>
