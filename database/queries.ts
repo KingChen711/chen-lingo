@@ -1,8 +1,9 @@
 import { cache } from 'react'
 import db from '@/database/drizzle'
 import { auth } from '@clerk/nextjs'
-import { challengeProgresses, challenges, courses, lessons, units, userProgresses } from './schema'
+import { challengeProgresses, challenges, courses, lessons, units, userProgresses, userSubscriptions } from './schema'
 import { eq } from 'drizzle-orm'
+import { DAY_IN_MS } from '@/constants'
 
 export const getCourses = cache(async () => {
   return await db.query.courses.findMany()
@@ -10,8 +11,17 @@ export const getCourses = cache(async () => {
 
 export const getCourseById = cache(async (courseId: number) => {
   return await db.query.courses.findFirst({
-    where: eq(courses.id, courseId)
-    //TODO: populate units and lessons
+    where: eq(courses.id, courseId),
+    with: {
+      units: {
+        orderBy: (units, { asc }) => [asc(units.order)],
+        with: {
+          lessons: {
+            orderBy: (lessons, { asc }) => [asc(lessons.order)]
+          }
+        }
+      }
+    }
   })
 })
 
@@ -101,7 +111,7 @@ export const getCourseProgress = cache(async () => {
     .flatMap((unit) => unit.lessons)
     .find((lesson) => {
       return (
-        lesson.challenges.length === 0 || //!If lesson have no any challenges, it always uncompleted
+        lesson.challenges.length === 0 || //!If lesson have no any challenges, it always completed
         lesson.challenges.some((challenge) => {
           return challenge.challengeProgresses.length !== 1 || !challenge.challengeProgresses[0].completed
         })
@@ -168,4 +178,35 @@ export const getLessonPercentage = cache(async () => {
   }
 
   return (lesson.challenges.filter((challenge) => challenge.completed).length / lesson.challenges.length) * 100
+})
+
+export const getUserSubscription = cache(async () => {
+  const userProgress = await getUserProgress()
+
+  if (!userProgress) {
+    return null
+  }
+
+  const data = await db.query.userSubscriptions.findFirst({
+    where: eq(userSubscriptions.userId, userProgress.userId)
+  })
+
+  if (!data) return null
+
+  const isActive = data.stripePriceId && data.stripeCurrentPeriodEnd.getTime() + DAY_IN_MS > Date.now()
+
+  return { ...data, isActive: !!isActive }
+})
+
+export const getTopTenUsers = cache(async () => {
+  return await db.query.userProgresses.findMany({
+    orderBy: (userProgresses, { desc }) => [desc(userProgresses.points)],
+    limit: 10,
+    columns: {
+      userId: true,
+      userName: true,
+      userImageSrc: true,
+      points: true
+    }
+  })
 })

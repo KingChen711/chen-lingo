@@ -1,5 +1,5 @@
 import { relations } from 'drizzle-orm'
-import { boolean, integer, pgEnum, pgTable, primaryKey, serial, text } from 'drizzle-orm/pg-core'
+import { boolean, integer, pgEnum, pgTable, primaryKey, serial, text, timestamp } from 'drizzle-orm/pg-core'
 
 export const challengeProgresses = pgTable(
   'challenge_progresses',
@@ -129,5 +129,33 @@ export const userProgressesRelations = relations(userProgresses, ({ one, many })
     fields: [userProgresses.activeCourseId],
     references: [courses.id]
   }),
-  challengeProgresses: many(challengeProgresses)
+  challengeProgresses: many(challengeProgresses),
+  userSubscription: one(userSubscriptions)
+}))
+
+export const userSubscriptions = pgTable(
+  'user_subscription',
+  {
+    userId: text('user_id')
+      .notNull()
+      .unique()
+      .references(() => userProgresses.userId, { onDelete: 'cascade' })
+      .notNull(),
+    stripeCustomerId: text('stripe_customer_id').notNull().unique(),
+    stripeSubscriptionId: text('stripe_subscription_id').notNull().unique(),
+    stripePriceId: text('stripe_price_id').notNull(),
+    stripeCurrentPeriodEnd: timestamp('stripe_current_period_end').notNull()
+  },
+  (table) => {
+    return {
+      pk: primaryKey({ columns: [table.userId] })
+    }
+  }
+)
+
+export const userSubscriptionsRelations = relations(userSubscriptions, ({ one }) => ({
+  user: one(userProgresses, {
+    fields: [userSubscriptions.userId],
+    references: [userProgresses.userId]
+  })
 }))

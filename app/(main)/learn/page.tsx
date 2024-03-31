@@ -3,7 +3,13 @@ import StickyWrapper from '@/components/shared/sticky-wrapper'
 import React from 'react'
 import Header from './header'
 import UserProgress from '@/components/shared/user-progress'
-import { getCourseProgress, getLessonPercentage, getUnits, getUserProgress } from '@/database/queries'
+import {
+  getCourseProgress,
+  getLessonPercentage,
+  getUnits,
+  getUserProgress,
+  getUserSubscription
+} from '@/database/queries'
 import { redirect } from 'next/navigation'
 import Unit from './unit'
 
@@ -12,17 +18,21 @@ async function LearnPage() {
   const courseProgressData = getCourseProgress()
   const lessonPercentageData = getLessonPercentage()
   const unitsData = getUnits()
+  const userSubscriptionData = getUserSubscription()
 
-  const [userProgress, courseProgress, lessonPercentage, units] = await Promise.all([
+  const [userProgress, courseProgress, lessonPercentage, units, userSubscription] = await Promise.all([
     userProgressData,
     courseProgressData,
     lessonPercentageData,
-    unitsData
+    unitsData,
+    userSubscriptionData
   ])
 
   if (!userProgress || !userProgress.activeCourse || !courseProgress) {
     redirect('/courses')
   }
+
+  const isPro = !!userSubscription?.isActive
 
   return (
     <div className='flex flex-row-reverse gap-[48px] px-6'>
@@ -31,7 +41,7 @@ async function LearnPage() {
           activeCourse={userProgress.activeCourse}
           hearts={userProgress.hearts}
           points={userProgress.points}
-          hasActiveSubscription={false}
+          hasActiveSubscription={isPro}
         />
       </StickyWrapper>
       <FeedWrapper>

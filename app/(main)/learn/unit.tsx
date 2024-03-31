@@ -18,7 +18,7 @@ function Unit({ activeLesson, activeLessonPercentage, description, id, lessons, 
     <>
       <UnitBanner title={title} description={description} />
 
-      <div className='flex items-center flex-col relative'>
+      <div className='flex items-center flex-col relative mt-6'>
         {lessons.map((lesson, index) => {
           const isCurrent = lesson.id === activeLesson?.id
           const isLocked = !lesson.completed && !isCurrent

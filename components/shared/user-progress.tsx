@@ -35,7 +35,7 @@ function UserProgress({ activeCourse, hasActiveSubscription, hearts, points }: P
       <Link href='/shop'>
         <Button variant='ghost' className='text-rose-500'>
           <Image src='/heart.svg' alt='heart' width={22} height={22} className='mr-2' />
-          {hasActiveSubscription ? <InfinityIcon className='size-4 stroke-[3]' /> : hearts}
+          {hasActiveSubscription ? <InfinityIcon className='size-4 stroke-[3] shrink-0' /> : hearts}
         </Button>
       </Link>
     </div>

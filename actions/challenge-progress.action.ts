@@ -1,7 +1,7 @@
 'use server'
 
 import db from '@/database/drizzle'
-import { getUserProgress } from '@/database/queries'
+import { getUserProgress, getUserSubscription } from '@/database/queries'
 import { challengeProgresses, challenges, userProgresses } from '@/database/schema'
 import { auth } from '@clerk/nextjs'
 import { and, eq } from 'drizzle-orm'
@@ -13,8 +13,6 @@ export const upsertChallengeProgress = async (challengeId: number) => {
   if (!userProgress) {
     throw new Error('UserId is required')
   }
-
-  //TODO:handle subscription
 
   const challenge = await db.query.challenges.findFirst({
     where: eq(challenges.id, challengeId),
@@ -32,10 +30,11 @@ export const upsertChallengeProgress = async (challengeId: number) => {
 
   const existChallengeProgress = challenge.challengeProgresses.length === 1 ? challenge.challengeProgresses[0] : null
 
-  const isPractice = !!existChallengeProgress //do lesson again
+  const isPractice = !!existChallengeProgress
+  const userSubscription = await getUserSubscription()
+  const isPro = !!userSubscription?.isActive
 
-  //TODO: check subscription later
-  if (userProgress.hearts === 0 && !isPractice) {
+  if (userProgress.hearts === 0 && !isPractice && !isPro) {
     return { error: 'hearts' }
   }
 

@@ -1,11 +1,16 @@
 import { getLesson, getUserProgress, getUserSubscription } from '@/database/queries'
-import { challenges } from '@/database/schema'
 import { redirect } from 'next/navigation'
 import React from 'react'
-import Quiz from './quiz'
+import Quiz from '../quiz'
 
-async function LessonPage() {
-  const lessonData = getLesson()
+type Props = {
+  params: {
+    lessonId: number
+  }
+}
+
+async function LessonIdPage({ params }: Props) {
+  const lessonData = getLesson(params.lessonId)
   const userProgressData = getUserProgress()
   const userSubscriptionData = getUserSubscription()
 
@@ -35,4 +40,4 @@ async function LessonPage() {
   )
 }
 
-export default LessonPage
+export default LessonIdPage
