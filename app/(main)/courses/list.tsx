@@ -24,7 +24,9 @@ function List({ courses, activeCourseId }: Props) {
     }
 
     startTransition(() => {
-      upsertUserProgress(courseId).catch(() => toast.error('Something went wrong!'))
+      upsertUserProgress(courseId).catch(() =>
+        toast.error('This course is empty. Currently only available in Spanish!')
+      )
     })
   }
 
