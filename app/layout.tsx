@@ -6,6 +6,7 @@ import { Toaster } from '@/components/ui/sonner'
 import { ExitModal } from '@/components/modals/exit-modal'
 import { HeartsModal } from '@/components/modals/hearts-modal'
 import { PracticeModal } from '@/components/modals/practice-modal'
+import React from 'react'
 
 const font = Nunito({ subsets: ['latin'] })
 

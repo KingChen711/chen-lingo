@@ -3,7 +3,7 @@
 import { POINTS_TO_REFILL } from '@/constants'
 import db from '@/database/drizzle'
 import { getCourseById, getUserProgress, getUserSubscription } from '@/database/queries'
-import { challengeOptions, challengeProgresses, challenges, userProgresses } from '@/database/schema'
+import { challengeProgresses, challenges, userProgresses } from '@/database/schema'
 import { auth, currentUser } from '@clerk/nextjs'
 import { and, eq } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
