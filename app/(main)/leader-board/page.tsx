@@ -29,6 +29,8 @@ async function LeaderBoardPage() {
 
   const isPro = !!userSubscription?.isActive
 
+  console.log({ topTenUsers })
+
   return (
     <div className='flex flex-row-reverse gap-[48px] px-6'>
       <StickyWrapper>
@@ -56,10 +58,10 @@ async function LeaderBoardPage() {
               <div key={user.userId} className='flex items-center w-full p-2 px-4 rounded-xl hover:bg-gray-200/50'>
                 <p className='font-bold text-lime-700 mr-4'>{index + 1}</p>
                 <Avatar className='border bg-green-500 h-12 w-12 ml-3 mr-6'>
-                  <AvatarImage className='object-cover' src={userProgress.userImageSrc} />
+                  <AvatarImage className='object-cover' src={user.userImageSrc} />
                 </Avatar>
-                <p className='font-bold text-neutral-800 flex-1'>{userProgress.userName}</p>
-                <p className='text-muted-foreground'>{userProgress.points} XP</p>
+                <p className='font-bold text-neutral-800 flex-1'>{user.userName}</p>
+                <p className='text-muted-foreground'>{user.points} XP</p>
               </div>
             )
           })}
