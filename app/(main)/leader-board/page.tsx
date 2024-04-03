@@ -50,7 +50,7 @@ async function LeaderBoardPage() {
           <h1 className='text-center font-bold text-neutral-800 text-2xl my-6'>Leader Board</h1>
 
           <p className='text-muted-foreground text-center text-lg mb-6'>
-            See where you stand among other leaners in the community
+            See where you stand among other leaner in the community
           </p>
           <Separator className='mb-4 h-0.5 rounded-full' />
           {topTenUsers.map((user, index) => {
